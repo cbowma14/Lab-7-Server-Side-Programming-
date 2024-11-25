@@ -29,7 +29,7 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
-        List<Book> initialBookkkkkkkkkkkkkks = await Task.Run(() => libraryService.ReadBooks());
+        List<Book> initialBooks = await Task.Run(() => libraryService.ReadBooks());
         var bookToBeAdded = new List<Book>
         {
             new Book { Id = 1, Title = "Book 1", Author = "Author 1", ISBN = "ISBN001" }
@@ -42,8 +42,8 @@ public class LibraryServiceTests
 
         // Assert
         Assert.IsNotNull(updatedBooks);
-        Assert.AreEqual(, updatedBooks.Count); // Verify a new book was added
-        Assert.IsTrue(updatedBooks.Any(b => b.Title == "New Boooooooook")); // Check the new book exists
+        Assert.AreEqual(initialBooks.Count + 1, updatedBooks.Count); // Verify a new book was added
+        Assert.IsTrue(updatedBooks.Any(b => b.Title == "New Book")); // Check the new book exists
     }
 
 
