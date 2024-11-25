@@ -1,0 +1,97 @@
+﻿@page "/users"
+@using Lab5.Models
+@using Lab5.Services
+@inject ILibraryService LibraryService
+
+<h3>User Management</h3>
+
+<!-- User Form -->
+<h4>@(isEditing ? "Edit User" : "Add User")</h4>
+<div>
+    <label>Name: <input @bind="user.Name" /></label><br />
+    <label>Email: <input @bind="user.Email" /></label><br />
+    <button @onclick="SaveUser">@(isEditing ? "Save Changes" : "Add User")</button>
+    <button @onclick="ClearForm" style="display:@(isEditing ? "inline" : "none")">Cancel</button>
+</div>
+
+<!-- User List -->
+<h4>User List</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Name</th>
+            <th>Email</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var u in users)
+        {
+            <tr>
+                <td>@u.Id</td>
+                <td>@u.Name</td>
+                <td>@u.Email</td>
+                <td>
+                    <button @onclick="() => EditUser(u)">Edit</button>
+                    <button @onclick="() => DeleteUser(u.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<User> users = new();
+    private User user = new();
+    private bool isEditing = false;
+
+    protected override void OnInitialized()
+    {
+        LoadUsers();
+    }
+
+    private void LoadUsers()
+    {
+        users = LibraryService.ReadUsers();
+    }
+
+    private void SaveUser()
+    {
+        if (isEditing)
+        {
+            LibraryService.EditUser(user.Id, user.Name, user.Email);
+        }
+        else
+        {
+            LibraryService.AddUser(user);
+        }
+
+        // Refresh user list and reset form
+        LoadUsers();
+        ClearForm();
+    }
+
+    private void EditUser(User u)
+    {
+        user = new User
+            {
+                Id = u.Id,
+                Name = u.Name,
+                Email = u.Email
+            };
+        isEditing = true;
+    }
+
+    private void DeleteUser(int id)
+    {
+        LibraryService.DeleteUser(id);
+        LoadUsers();
+    }
+
+    private void ClearForm()
+    {
+        user = new User();
+        isEditing = false;
+    }
+}

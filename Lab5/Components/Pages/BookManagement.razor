@@ -1,0 +1,101 @@
+﻿@page "/books"
+@using Lab5.Models
+@using Lab5.Services
+@inject ILibraryService LibraryService
+
+<h3>Book Management</h3>
+
+<!-- Book Form -->
+<h4>@(isEditing ? "Edit Book" : "Add Book")</h4>
+<div>
+    <label>Title: <input @bind="book.Title" /></label><br />
+    <label>Author: <input @bind="book.Author" /></label><br />
+    <label>ISBN: <input @bind="book.ISBN" /></label><br />
+    <button @onclick="SaveBook">@(isEditing ? "Save Changes" : "Add Book")</button>
+    <button @onclick="ClearForm" style="display:@(isEditing ? "inline" : "none")">Cancel</button>
+</div>
+
+<!-- Book List -->
+<h4>Book List</h4>
+<table>
+    <thead>
+        <tr>
+            <th>Id</th>
+            <th>Title</th>
+            <th>Author</th>
+            <th>ISBN</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var b in books)
+        {
+            <tr>
+                <td>@b.Id</td>
+                <td>@b.Title</td>
+                <td>@b.Author</td>
+                <td>@b.ISBN</td>
+                <td>
+                    <button @onclick="() => EditBook(b)">Edit</button>
+                    <button @onclick="() => DeleteBook(b.Id)">Delete</button>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@code {
+    private List<Book> books = new();
+    private Book book = new();
+    private bool isEditing = false;
+
+    protected override void OnInitialized()
+    {
+        LoadBooks();
+    }
+
+    private void LoadBooks()
+    {
+        books = LibraryService.ReadBooks();
+    }
+
+    private void SaveBook()
+    {
+        if (isEditing)
+        {
+            LibraryService.EditBook(book.Id, book.Title, book.Author, book.ISBN);
+        }
+        else
+        {
+            LibraryService.AddBook(book);
+        }
+
+        // Refresh book list and reset form
+        LoadBooks();
+        ClearForm();
+    }
+
+    private void EditBook(Book b)
+    {
+        book = new Book
+        {
+            Id = b.Id,
+            Title = b.Title,
+            Author = b.Author,
+            ISBN = b.ISBN
+        };
+        isEditing = true;
+    }
+
+    private void DeleteBook(int id)
+    {
+        LibraryService.DeleteBook(id);
+        LoadBooks();
+    }
+
+    private void ClearForm()
+    {
+        book = new Book();
+        isEditing = false;
+    }
+}
