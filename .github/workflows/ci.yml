@@ -12,6 +12,10 @@ jobs:
   build-and-test:
     runs-on: windows-latest
 
+    env:
+      Solution_Name: Blazor Lab Starter Code.sln
+      Test_Project_Path: Lab7/LibraryServiceTest/LibraryServiceTest.csproj
+
     steps:
     - name: Checkout code
       uses: actions/checkout@v3
