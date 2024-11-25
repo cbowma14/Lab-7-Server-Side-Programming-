@@ -65,7 +65,7 @@ public class LibraryServiceTests
 
         // Assert
         Assert.IsNotNull(updatedBooks);
-        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 100);
+        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 1000000000000000);
         Assert.IsNotNull(editedBook);
         Assert.AreEqual(updatedTitle, editedBook.Title);
         Assert.AreEqual(updatedAuthor, editedBook.Author);
