@@ -53,17 +53,19 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
+        libraryService.AddBook(new Book {Id = 10, Title = "Original Book", Author = "Original Author", ISBN = "ORIGINALISBN001"});
+
         var updatedTitle = "Updated Book";
         var updatedAuthor = "Updated Author";
         var updatedISBN = "UPDATEDISBN001";
 
         // Act
-        libraryService.EditBook(100, updatedTitle, updatedAuthor, updatedISBN);
+        libraryService.EditBook(10, updatedTitle, updatedAuthor, updatedISBN);
         List<Book> updatedBooks = await Task.Run(() => libraryService.ReadBooks());
 
         // Assert
         Assert.IsNotNull(updatedBooks);
-        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 100);
+        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 10);
         Assert.IsNotNull(editedBook);
         Assert.AreEqual(updatedTitle, editedBook.Title);
         Assert.AreEqual(updatedAuthor, editedBook.Author);
@@ -78,16 +80,17 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
+        libraryService.AddBook(new Book { Id = 10, Title = "Original Book", Author = "Original Author", ISBN = "ORIGINALISBN001" });
         List<Book> initialBooks = await Task.Run(() => libraryService.ReadBooks());
 
         // Act
-        libraryService.DeleteBook(100);
+        libraryService.DeleteBook(10);
         List<Book> updatedBooks = await Task.Run(() => libraryService.ReadBooks());
 
         // Assert
         Assert.IsNotNull(updatedBooks);
         Assert.AreEqual(initialBooks.Count - 1, updatedBooks.Count);
-        Assert.IsFalse(updatedBooks.Any(b => b.Id == 100));
+        Assert.IsFalse(updatedBooks.Any(b => b.Id == 10));
     }
 
 
@@ -133,6 +136,7 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
+        libraryService.AddUser(new User { Id = 10, Name = "Original User", Email = "original@example.com" });
 
         var updatedName = "Updated User";
         var updatedEmail = "updateduser@example.com";
@@ -156,6 +160,7 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
+        libraryService.AddUser(new User { Id = 10, Name = "Original User", Email = "original@example.com" });
         List<User> initialUsers = await Task.Run(() => libraryService.ReadUsers());
 
         // Act
