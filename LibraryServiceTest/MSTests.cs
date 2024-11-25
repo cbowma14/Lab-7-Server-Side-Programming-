@@ -53,7 +53,7 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
-        libraryService.AddBook(new Book {Id = 10, Title = "Original Book", Author = "Original Author", ISBN = "ORIGINALISBN001"});
+        
 
         var updatedTitle = "Updated Book";
         var updatedAuthor = "Updated Author";
@@ -65,7 +65,7 @@ public class LibraryServiceTests
 
         // Assert
         Assert.IsNotNull(updatedBooks);
-        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 1000000000000000);
+        var editedBook = updatedBooks.FirstOrDefault(b => b.Id == 10);
         Assert.IsNotNull(editedBook);
         Assert.AreEqual(updatedTitle, editedBook.Title);
         Assert.AreEqual(updatedAuthor, editedBook.Author);
