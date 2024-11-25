@@ -53,7 +53,7 @@ public class LibraryServiceTests
     {
         // Arrange
         LibraryService libraryService = new LibraryService();
-        
+        libraryService.AddBook(new Book {Id = 10, Title = "Original Book", Author = "Original Author", ISBN = "ORIGINALISBN001"});
 
         var updatedTitle = "Updated Book";
         var updatedAuthor = "Updated Author";
